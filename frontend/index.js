@@ -8,9 +8,18 @@ async function sprintChallenge5() { // Note the async keyword so you can use `aw
   // 🧠 Use Axios to GET learners and mentors.
   // ❗ Use the variables `mentors` and `learners` to store the data.
   // ❗ Use the await keyword when using axios.
+   
+  let mentors;
+  let learners;
+  
+  try {
+    const mentorsResponse = await axios.get('http://serverlocation.com/mentors');
+    mentors = mentorsResponse.data;
 
-  let mentors = [] // fix this
-  let learners = [] // fix this
+    const learnersResponse = await axios.get('http://serverlocation.com/learners');
+    learners = learnersResponse.data;
+  
+  
 
   // 👆 ==================== TASK 1 END ====================== 👆
 
@@ -26,7 +35,23 @@ async function sprintChallenge5() { // Note the async keyword so you can use `aw
   //   mentors: [
   //     "Bill Gates",
   //     "Grace Hopper"
-  //   ]`
+  //  try {
+    
+    
+  
+  learners = learners.map(learner => {
+    learner.mentors = learner.mentors.map(mentorId => {
+      const mentor = mentors.find(mentor => mentor.id === mentorId);
+      return mentor.fullName;
+    });
+    return learner;
+  });
+
+} catch (error) {
+  console.error('Error:', error);
+}
+  
+}
   // }
 
   // 👆 ==================== TASK 2 END ====================== 👆
@@ -38,8 +63,36 @@ async function sprintChallenge5() { // Note the async keyword so you can use `aw
 
   // 👇 ==================== TASK 3 START ==================== 👇
 
-  for (let learner of learners) { // looping over each learner object
+  for (let learner of learners) { 
+  const card = document.createElement('div');
+  card.classList.add('card'); 
 
+  const heading = document.createElement('h3');
+  heading.textContent = learner.fullName; 
+
+  const email = document.createElement('div');
+  email.textContent = learner.email; 
+  email.classList.add('email'); 
+
+  const mentorsHeading = document.createElement('h4');
+  mentorsHeading.textContent = 'Mentors'; 
+
+  const mentorsList = document.createElement('ul');
+
+  for (let mentor of learner.mentors) {
+    const mentorItem = document.createElement('li');
+    mentorItem.textContent = mentor; 
+    mentorsList.appendChild(mentorItem); 
+  }
+
+  
+  card.appendChild(heading);
+  card.appendChild(email);
+  card.appendChild(mentorsHeading);
+  card.appendChild(mentorsList);
+
+  cardsContainer.appendChild(card);
+}
     // 🧠 Flesh out the elements that describe each learner
     // ❗ Give the elements below their (initial) classes, textContent and proper nesting.
     // ❗ Do not change the variable names, as the code that follows depends on those names.
@@ -47,12 +100,9 @@ async function sprintChallenge5() { // Note the async keyword so you can use `aw
     // ❗ Fill each <li> with a mentor name, and append it to the <ul> mentorList.
     // ❗ Inspect the mock site closely to understand what the initial texts and classes look like!
 
-    const card = document.createElement('div')
-    const heading = document.createElement('h3')
-    const email = document.createElement('div')
-    const mentorsHeading = document.createElement('h4')
-    const mentorsList = document.createElement('ul')
+    
 
+    
     // 👆 ==================== TASK 3 END ====================== 👆
 
     // 👆 WORK ONLY ABOVE THIS LINE 👆
@@ -79,8 +129,8 @@ async function sprintChallenge5() { // Note the async keyword so you can use `aw
         if (!isCardSelected) {
           // selecting the card:
           card.classList.add('selected')
-          heading.textContent += `, ID ${learner.id}`
-          info.textContent = `The selected learner is ${learner.fullName}`
+          heading.textContent += ` ID ${learner.id}`
+          info.textContent = `The selected learner is ${learner.fullName}`;
         }
       } else {
         // clicked on mentors, we toggle and select no matter what
@@ -93,16 +143,16 @@ async function sprintChallenge5() { // Note the async keyword so you can use `aw
         if (!isCardSelected) {
           // if card was not selected adjust texts
           heading.textContent += `, ID ${learner.id}`
-          info.textContent = `The selected learner is ${learner.fullName}`
+          info.textContent = `The selected learner is ${learner.fullName}`;
         }
       }
     })
-  }
+  
 
   const footer = document.querySelector('footer')
   const currentYear = new Date().getFullYear()
-  footer.textContent = `© BLOOM INSTITUTE OF TECHNOLOGY ${currentYear}`
-}
+  footer.textContent = `© BLOOM INSTITUTE OF TECHNOLOGY ${currentYear}`;
+  }
 
 // ❗ DO NOT CHANGE THIS CODE. WORK ONLY INSIDE TASKS 1, 2, 3
 if (typeof module !== 'undefined' && module.exports) module.exports = { sprintChallenge5 }
