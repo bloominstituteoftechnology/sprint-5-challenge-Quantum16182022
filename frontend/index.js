@@ -13,10 +13,10 @@ async function sprintChallenge5() { // Note the async keyword so you can use `aw
   let learners;
   
   try {
-    const mentorsResponse = await axios.get('http://serverlocation.com/mentors');
+    const mentorsResponse = await axios.get('http://localhost:3003/api/mentors');
     mentors = mentorsResponse.data;
 
-    const learnersResponse = await axios.get('http://serverlocation.com/learners');
+    const learnersResponse = await axios.get('http://localhost:3003/api/learners');
     learners = learnersResponse.data;
   
   
