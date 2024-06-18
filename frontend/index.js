@@ -12,7 +12,7 @@ async function sprintChallenge5() { // Note the async keyword so you can use `aw
   let mentors;
   let learners;
   
-  try {
+  
     const mentorsResponse = await axios.get('http://localhost:3003/api/mentors');
     mentors = mentorsResponse.data;
 
@@ -42,16 +42,15 @@ async function sprintChallenge5() { // Note the async keyword so you can use `aw
   learners = learners.map(learner => {
     learner.mentors = learner.mentors.map(mentorId => {
       const mentor = mentors.find(mentor => mentor.id === mentorId);
-      return mentor.fullName;
+      return mentor.firstName + " " + mentor.lastName;
     });
     return learner;
   });
+console.log(learners)
 
-} catch (error) {
-  console.error('Error:', error);
-}
+
   
-}
+
   // }
 
   // 👆 ==================== TASK 2 END ====================== 👆
@@ -64,35 +63,37 @@ async function sprintChallenge5() { // Note the async keyword so you can use `aw
   // 👇 ==================== TASK 3 START ==================== 👇
 
   for (let learner of learners) { 
-  const card = document.createElement('div');
-  card.classList.add('card'); 
+    const card = document.createElement('div');
+    card.classList.add('card'); 
 
-  const heading = document.createElement('h3');
-  heading.textContent = learner.fullName; 
+    const heading = document.createElement('h3');
+    heading.textContent = learner.fullName; 
 
-  const email = document.createElement('div');
-  email.textContent = learner.email; 
-  email.classList.add('email'); 
+    const email = document.createElement('div');
+    email.textContent = learner.email; 
+    email.classList.add('email'); 
 
-  const mentorsHeading = document.createElement('h4');
-  mentorsHeading.textContent = 'Mentors'; 
+    const mentorsHeading = document.createElement('h4');
+    mentorsHeading.textContent = 'Mentors'; 
+    mentorsHeading.classList.add('closed')
 
-  const mentorsList = document.createElement('ul');
+    const mentorsList = document.createElement('ul');
 
-  for (let mentor of learner.mentors) {
+   
+    for (let mentor of learner.mentors) {
     const mentorItem = document.createElement('li');
     mentorItem.textContent = mentor; 
     mentorsList.appendChild(mentorItem); 
-  }
+    }
 
   
-  card.appendChild(heading);
-  card.appendChild(email);
-  card.appendChild(mentorsHeading);
-  card.appendChild(mentorsList);
+    card.appendChild(heading);
+    card.appendChild(email);
+    card.appendChild(mentorsHeading);
+    card.appendChild(mentorsList);
 
-  cardsContainer.appendChild(card);
-}
+   cardsContainer.appendChild(card);
+  
     // 🧠 Flesh out the elements that describe each learner
     // ❗ Give the elements below their (initial) classes, textContent and proper nesting.
     // ❗ Do not change the variable names, as the code that follows depends on those names.
@@ -147,7 +148,7 @@ async function sprintChallenge5() { // Note the async keyword so you can use `aw
         }
       }
     })
-  
+  }
 
   const footer = document.querySelector('footer')
   const currentYear = new Date().getFullYear()
